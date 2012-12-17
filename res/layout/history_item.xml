@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical" >
+
+    <ImageView
+        android:id="@+id/task_status_deleted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:minWidth="48dp"
+        android:src="@drawable/round_delete_icon"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/task_status_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:minWidth="48dp"
+        android:src="@drawable/round_checkmark_icon" />
+
+    <TextView
+        android:id="@+id/task_title"
+        style="@style/listTextStyle"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="This is a very very long text. Should not be able to contained in one line." />
+
+    <ImageButton
+        android:id="@+id/task_restore"
+        style="@style/imageButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/br_next_icon" />
+
+</LinearLayout>

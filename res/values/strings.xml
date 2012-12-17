@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">TaskQueue</string>
+    <string name="title_backlog">Backlog</string>
+    <string name="title_checkout">Checkout</string>
+    <string name="title_history">History</string>
+    <string name="menu_add">Add</string>
+    <string name="menu_settings">Settings</string>
+    <string name="list_checkout_empty">There is no task checked out.\nAdd new or pick some from Backlog.</string>
+    <string name="list_backlog_empty">There is no task in Backlog.\nAdd by clicking the + button.</string>
+    <string name="list_history_empty">History is empty.</string>
+    <string name="task_title_edit_hint">+ add a new task</string>
+    
+</resources>

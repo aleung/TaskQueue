@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical" >
+
+    <CheckBox
+        android:id="@+id/task_is_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/task_title"
+        style="@style/listTextStyle"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <ImageButton
+        android:id="@+id/task_plan"
+        style="@style/imageButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/calendar_2_icon" />
+
+    <ImageButton
+        android:id="@+id/task_uncheckout"
+        style="@style/imageButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/br_next_icon" />
+
+    <EditText
+        android:id="@+id/task_title_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/task_title_edit_hint"
+        android:inputType="textCapSentences"
+        android:visibility="gone" />
+
+</LinearLayout>

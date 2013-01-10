@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 public class HistoryTasksFragment extends TaskListFragment {
 
+	private HistoryTaskList taskList;
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -29,8 +31,10 @@ public class HistoryTasksFragment extends TaskListFragment {
 		// Start out with a progress indicator.
 		setListShown(false);
 
-		getLoaderManager().initLoader(0, null, this);
+		Loader<List<Task>> loader = getLoaderManager().initLoader(0, null, this);
+		taskList = (HistoryTaskList) loader;
 
+		taskList.purgeTasks(7);
 	}
 
 	@Override
@@ -61,17 +65,13 @@ public class HistoryTasksFragment extends TaskListFragment {
 			restoreButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					getTaskList().restoreTask(task.getId());
+					taskList.restoreTask(task.getId());
 				}
 			});
 
 			return view;
 		}
 
-		private HistoryTaskList getTaskList() {
-			Loader<List<Task>> loader = getLoaderManager().getLoader(0);
-			return (HistoryTaskList) loader;
-		}
 	}
 
 

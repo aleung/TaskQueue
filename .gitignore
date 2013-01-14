@@ -19,6 +19,9 @@ local.properties
 .hg
 .svn
 
+# backup files
+*.bak
+
 #---------------------
 # OSX
 #---------------------

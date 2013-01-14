@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -61,11 +62,23 @@ public class HistoryTasksFragment extends TaskListFragment {
 			View view = LayoutInflater.from(getActivity()).inflate(R.layout.history_item, null);
 
 			// TODO: use ViewHolder to avoid findViewById every time
+			ImageView statusView = (ImageView) view.findViewById(R.id.task_status);
 			final TextView titleView = (TextView) view.findViewById(R.id.task_title);
+			final TextView ageView = (TextView) view.findViewById(R.id.task_age);
 			final ImageButton restoreButton = (ImageButton) view.findViewById(R.id.task_restore);
 			final Task task = (Task) getItem(position);
 
+			if (task.getStatus() == Task.Status.DONE) {
+				statusView.setImageResource(R.drawable.round_checkmark_icon);
+			} else if (task.getStatus() == Task.Status.DELETED) {
+				statusView.setImageResource(R.drawable.round_delete_icon);
+			} else {
+				throw new AssertionError("Illegal task status in history task list. Status: "
+						+ task.getStatus().toString());
+			}
 			titleView.setText(task.getTitle());
+			// FIXME: calculate age by date; i18n
+			ageView.setText((System.currentTimeMillis() - task.getModified()) / 3600000 / 24 + " days ago");
 
 			restoreButton.setOnClickListener(new View.OnClickListener() {
 				@Override

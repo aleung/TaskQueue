@@ -10,5 +10,8 @@
     <string name="list_backlog_empty">There is no task in Backlog.\nAdd by clicking the + button.</string>
     <string name="list_history_empty">History is empty.</string>
     <string name="task_title_edit_hint">+ add a new task</string>
-    
+    <string name="title_schedule">Schedule</string>
+    <string name="button_set">Set</string>
+    <string name="button_remove">Remove</string>
+
 </resources>

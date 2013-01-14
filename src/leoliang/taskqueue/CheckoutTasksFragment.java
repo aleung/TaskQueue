@@ -2,6 +2,7 @@ package leoliang.taskqueue;
 
 import java.util.List;
 
+import leoliang.taskqueue.DatePickerFragment.DatePickedEvent;
 import leoliang.taskqueue.repository.CheckoutTaskList;
 import leoliang.taskqueue.repository.Task;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import de.greenrobot.event.EventBus;
 
 
 public class CheckoutTasksFragment extends TaskListFragment {
@@ -61,7 +63,10 @@ public class CheckoutTasksFragment extends TaskListFragment {
 		getTaskList().addTask(title);
 	}
 
-
+	@Override
+	protected void scheduleTask(long id, long timeLocal) {
+		getTaskList().scheduleTask(id, timeLocal);
+	}
 
 	class CheckoutTaskListAdapter extends TaskListAdapter {
 
@@ -76,7 +81,7 @@ public class CheckoutTasksFragment extends TaskListFragment {
 			final EditText titleViewEdit = (EditText) view.findViewById(R.id.task_title_edit);
 			final CheckBox doneBox = (CheckBox) view.findViewById(R.id.task_is_done);
 			final ImageButton uncheckoutButton = (ImageButton) view.findViewById(R.id.task_uncheckout);
-			final ImageButton planButton = (ImageButton) view.findViewById(R.id.task_plan);
+			final ImageButton scheduleButton = (ImageButton) view.findViewById(R.id.task_schedule);
 
 			final Task task = (Task) getItem(position);
 
@@ -87,7 +92,7 @@ public class CheckoutTasksFragment extends TaskListFragment {
 					titleView.setVisibility(View.GONE);
 					doneBox.setVisibility(View.GONE);
 					uncheckoutButton.setVisibility(View.GONE);
-					planButton.setVisibility(View.GONE);
+					scheduleButton.setVisibility(View.GONE);
 					titleViewEdit.setVisibility(View.VISIBLE);
 					titleViewEdit.requestFocus();
 				}
@@ -104,7 +109,7 @@ public class CheckoutTasksFragment extends TaskListFragment {
 						titleView.setVisibility(View.VISIBLE);
 						doneBox.setVisibility(View.VISIBLE);
 						uncheckoutButton.setVisibility(View.VISIBLE);
-						planButton.setVisibility(View.VISIBLE);
+						scheduleButton.setVisibility(View.VISIBLE);
 						if (!newTitle.equals(task.getTitle())) {
 							getTaskList().updateTitle(task.getId(), newTitle);
 						}
@@ -126,6 +131,15 @@ public class CheckoutTasksFragment extends TaskListFragment {
 				@Override
 				public void onClick(View v) {
 					getTaskList().uncheckoutTask(task.getId());
+				}
+			});
+
+			scheduleButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					DatePickerFragment datePicker = DatePickerFragment.newInstance(task.getId(), task.getPlanned());
+					datePicker.show(CheckoutTasksFragment.this.getFragmentManager(), "");
+					EventBus.getDefault().register(CheckoutTasksFragment.this, DatePickedEvent.class);
 				}
 			});
 

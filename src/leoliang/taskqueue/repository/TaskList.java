@@ -105,10 +105,11 @@ public abstract class TaskList extends AsyncTaskLoader<List<Task>> {
 		forceLoad();
 	}
 
-	protected void planTask(long taskId, long plannedDate) {
+	protected void scheduleTask(long taskId, long plannedDate) {
 		SQLiteDatabase database = new DatabaseOpenHelper(getContext()).getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("planned", plannedDate);
+		values.put("status", Task.Status.BACKLOG.name());
 		values.put("modified", System.currentTimeMillis());
 		database.update(DatabaseOpenHelper.TABLE_NAME, values, "_id=?", new String[] { String.valueOf(taskId) });
 		database.close();

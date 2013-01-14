@@ -2,6 +2,7 @@ package leoliang.taskqueue;
 
 import java.util.List;
 
+import leoliang.taskqueue.DatePickerFragment.DatePickedEvent;
 import leoliang.taskqueue.repository.Task;
 import android.content.Context;
 import android.support.v4.app.ListFragment;
@@ -19,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import de.greenrobot.event.EventBus;
 
 public abstract class TaskListFragment extends ListFragment implements LoaderCallbacks<List<Task>> {
 	protected TaskListAdapter mAdapter;
@@ -97,8 +99,10 @@ public abstract class TaskListFragment extends ListFragment implements LoaderCal
 
 	abstract protected void addTask(String title);
 
+	abstract protected void scheduleTask(long id, long timeLocal);
+
 	/**
-	 * Temp solution. Should reload once data is changed, not wait till the fragment is shown.
+	 * FIXME: Temp solution. Should reload once data is changed, not wait till the fragment is shown.
 	 */
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -107,4 +111,17 @@ public abstract class TaskListFragment extends ListFragment implements LoaderCal
 			getLoaderManager().restartLoader(0, null, this);
 		}
 	}
+
+	/**
+	 * Handle event from DatePickerFragment.
+	 */
+	public void onEvent(DatePickedEvent event) {
+		long timeLocal = event.getTime();
+		if (timeLocal >= 0) {
+			long taskId = event.getContextId();
+			scheduleTask(taskId, timeLocal);
+		}
+		EventBus.getDefault().unregister(this);
+	}
+
 }

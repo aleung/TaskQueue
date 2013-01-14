@@ -32,8 +32,8 @@ public class CheckoutTaskList extends TaskList {
 	}
 
 	@Override
-	public void planTask(long taskId, long plannedDate) {
-		super.planTask(taskId, plannedDate);
+	public void scheduleTask(long taskId, long plannedDate) {
+		super.scheduleTask(taskId, plannedDate);
 	}
 
 	@Override

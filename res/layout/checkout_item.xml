@@ -14,10 +14,22 @@
         style="@style/listTextStyle"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1" />
 
+    <EditText
+        android:id="@+id/task_title_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="@string/task_title_edit_hint"
+        android:inputType="textCapSentences"
+        android:visibility="gone" />
+
     <ImageButton
-        android:id="@+id/task_plan"
+        android:id="@+id/task_schedule"
         style="@style/imageButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,13 +41,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/br_next_icon" />
-
-    <EditText
-        android:id="@+id/task_title_edit"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/task_title_edit_hint"
-        android:inputType="textCapSentences"
-        android:visibility="gone" />
 
 </LinearLayout>

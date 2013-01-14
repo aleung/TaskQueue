@@ -1,7 +1,10 @@
 package leoliang.taskqueue;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
+import leoliang.taskqueue.DatePickerFragment.DatePickedEvent;
 import leoliang.taskqueue.repository.BacklogTaskList;
 import leoliang.taskqueue.repository.Task;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import de.greenrobot.event.EventBus;
 
 public class BacklogTasksFragment extends TaskListFragment {
 	@Override
@@ -57,6 +61,11 @@ public class BacklogTasksFragment extends TaskListFragment {
 	}
 
 
+	@Override
+	protected void scheduleTask(long id, long timeLocal) {
+		getTaskList().scheduleTask(id, timeLocal);
+	}
+
 	class BacklogTaskListAdapter extends TaskListAdapter {
 
 		@Override
@@ -68,8 +77,10 @@ public class BacklogTasksFragment extends TaskListFragment {
 			// TODO: use ViewHolder to avoid findViewById every time
 			final TextView titleView = (TextView) view.findViewById(R.id.task_title);
 			final EditText titleViewEdit = (EditText) view.findViewById(R.id.task_title_edit);
+			TextView dateView = (TextView) view.findViewById(R.id.task_date);
 			ImageButton checkoutButton = (ImageButton) view.findViewById(R.id.task_checkout);
 			ImageButton downButton = (ImageButton) view.findViewById(R.id.task_down_priority);
+			ImageButton scheduleButton = (ImageButton) view.findViewById(R.id.task_schedule);
 
 			final Task task = (Task) getItem(position);
 
@@ -97,6 +108,12 @@ public class BacklogTasksFragment extends TaskListFragment {
 				}
 			});
 
+			if (task.getPlanned() > 0) {
+				dateView.setText(formatDate(task.getPlanned()));
+				dateView.setVisibility(View.VISIBLE);
+			} else {
+				dateView.setVisibility(View.GONE);
+			}
 
 			checkoutButton.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -112,7 +129,21 @@ public class BacklogTasksFragment extends TaskListFragment {
 				}
 			});
 
+			scheduleButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					DatePickerFragment datePicker = DatePickerFragment.newInstance(task.getId(), task.getPlanned());
+					datePicker.show(BacklogTasksFragment.this.getFragmentManager(), "");
+					EventBus.getDefault().register(BacklogTasksFragment.this, DatePickedEvent.class);
+				}
+			});
+
 			return view;
+		}
+
+		private String formatDate(long timeMs) {
+			DateFormat format = DateFormat.getDateInstance();
+			return format.format(new Date(timeMs));
 		}
 
 	}

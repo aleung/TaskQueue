@@ -49,6 +49,9 @@ public class Task {
 		return status;
 	}
 
+	/**
+	 * Scheduled date in millisecond in local time zone.
+	 */
 	public long getPlanned() {
 		return planned;
 	}

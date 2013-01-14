@@ -47,6 +47,11 @@ public class HistoryTasksFragment extends TaskListFragment {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	protected void scheduleTask(long id, long timeLocal) {
+		throw new UnsupportedOperationException();
+	}
+
 	class HistoryTaskListAdapter extends TaskListAdapter {
 
 		@Override

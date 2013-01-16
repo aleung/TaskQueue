@@ -70,46 +70,59 @@ public class CheckoutTasksFragment extends TaskListFragment {
 
 	class CheckoutTaskListAdapter extends TaskListAdapter {
 
+		private class ViewHolder {
+			TextView titleView;
+			EditText titleViewEdit;
+			CheckBox doneBox;
+			ImageButton uncheckoutButton;
+			ImageButton scheduleButton;
+		}
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-
-			// TODO: use convertView to avoid inflate every time
-			View view = LayoutInflater.from(getActivity()).inflate(R.layout.checkout_item, null);
-
-			// TODO: use ViewHolder to avoid findViewById every time
-			final TextView titleView = (TextView) view.findViewById(R.id.task_title);
-			final EditText titleViewEdit = (EditText) view.findViewById(R.id.task_title_edit);
-			final CheckBox doneBox = (CheckBox) view.findViewById(R.id.task_is_done);
-			final ImageButton uncheckoutButton = (ImageButton) view.findViewById(R.id.task_uncheckout);
-			final ImageButton scheduleButton = (ImageButton) view.findViewById(R.id.task_schedule);
+			View view;
+			final ViewHolder holder;
+			if (convertView == null) {
+				view = LayoutInflater.from(getActivity()).inflate(R.layout.checkout_item, null);
+				holder = new ViewHolder();
+				holder.titleView = (TextView) view.findViewById(R.id.task_title);
+				holder.titleViewEdit = (EditText) view.findViewById(R.id.task_title_edit);
+				holder.doneBox = (CheckBox) view.findViewById(R.id.task_is_done);
+				holder.uncheckoutButton = (ImageButton) view.findViewById(R.id.task_uncheckout);
+				holder.scheduleButton = (ImageButton) view.findViewById(R.id.task_schedule);
+				view.setTag(holder);
+			} else {
+				view = convertView;
+				holder = (ViewHolder) view.getTag();
+			}
 
 			final Task task = (Task) getItem(position);
 
-			titleView.setText(task.getTitle());
-			titleView.setOnClickListener(new OnClickListener() {
+			holder.titleView.setText(task.getTitle());
+			holder.titleView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
-					titleView.setVisibility(View.GONE);
-					doneBox.setVisibility(View.GONE);
-					uncheckoutButton.setVisibility(View.GONE);
-					scheduleButton.setVisibility(View.GONE);
-					titleViewEdit.setVisibility(View.VISIBLE);
-					titleViewEdit.requestFocus();
+					holder.titleView.setVisibility(View.GONE);
+					holder.doneBox.setVisibility(View.GONE);
+					holder.uncheckoutButton.setVisibility(View.GONE);
+					holder.scheduleButton.setVisibility(View.GONE);
+					holder.titleViewEdit.setText(task.getTitle());
+					holder.titleViewEdit.setVisibility(View.VISIBLE);
+					holder.titleViewEdit.requestFocus();
 				}
 			});
 
-			titleViewEdit.setText(task.getTitle());
-			titleViewEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
+			holder.titleViewEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
 				@Override
 				public void onFocusChange(View v, boolean hasFocus) {
 					if (!hasFocus) {
-						String newTitle = titleViewEdit.getText().toString();
-						titleView.setText(newTitle);
-						titleViewEdit.setVisibility(View.GONE);
-						titleView.setVisibility(View.VISIBLE);
-						doneBox.setVisibility(View.VISIBLE);
-						uncheckoutButton.setVisibility(View.VISIBLE);
-						scheduleButton.setVisibility(View.VISIBLE);
+						String newTitle = holder.titleViewEdit.getText().toString();
+						holder.titleView.setText(newTitle);
+						holder.titleViewEdit.setVisibility(View.GONE);
+						holder.titleView.setVisibility(View.VISIBLE);
+						holder.doneBox.setVisibility(View.VISIBLE);
+						holder.uncheckoutButton.setVisibility(View.VISIBLE);
+						holder.scheduleButton.setVisibility(View.VISIBLE);
 						if (!newTitle.equals(task.getTitle())) {
 							getTaskList().updateTitle(task.getId(), newTitle);
 						}
@@ -117,8 +130,8 @@ public class CheckoutTasksFragment extends TaskListFragment {
 				}
 			});
 
-
-			doneBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			holder.doneBox.setChecked(false);
+			holder.doneBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				@Override
 				public void onCheckedChanged(CompoundButton button, boolean isChecked) {
 					if (isChecked) {
@@ -127,14 +140,14 @@ public class CheckoutTasksFragment extends TaskListFragment {
 				}
 			});
 
-			uncheckoutButton.setOnClickListener(new View.OnClickListener() {
+			holder.uncheckoutButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					getTaskList().uncheckoutTask(task.getId());
 				}
 			});
 
-			scheduleButton.setOnClickListener(new View.OnClickListener() {
+			holder.scheduleButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					DatePickerFragment datePicker = DatePickerFragment.newInstance(task.getId(), task.getPlanned());

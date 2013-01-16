@@ -68,68 +68,82 @@ public class BacklogTasksFragment extends TaskListFragment {
 
 	class BacklogTaskListAdapter extends TaskListAdapter {
 
+		private class ViewHolder {
+			TextView titleView;
+			EditText titleViewEdit;
+			TextView dateView;
+			ImageButton checkoutButton;
+			ImageButton downButton;
+			ImageButton scheduleButton;
+		}
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-
-			// TODO: use convertView to avoid inflate every time
-			View view = LayoutInflater.from(getActivity()).inflate(R.layout.backlog_item, null);
-
-			// TODO: use ViewHolder to avoid findViewById every time
-			final TextView titleView = (TextView) view.findViewById(R.id.task_title);
-			final EditText titleViewEdit = (EditText) view.findViewById(R.id.task_title_edit);
-			TextView dateView = (TextView) view.findViewById(R.id.task_date);
-			ImageButton checkoutButton = (ImageButton) view.findViewById(R.id.task_checkout);
-			ImageButton downButton = (ImageButton) view.findViewById(R.id.task_down_priority);
-			ImageButton scheduleButton = (ImageButton) view.findViewById(R.id.task_schedule);
+			View view;
+			final ViewHolder holder;
+			if (convertView == null) {
+				view = LayoutInflater.from(getActivity()).inflate(R.layout.backlog_item, null);
+				holder = new ViewHolder();
+				holder.titleView = (TextView) view.findViewById(R.id.task_title);
+				holder.titleViewEdit = (EditText) view.findViewById(R.id.task_title_edit);
+				holder.dateView = (TextView) view.findViewById(R.id.task_date);
+				holder.checkoutButton = (ImageButton) view.findViewById(R.id.task_checkout);
+				holder.downButton = (ImageButton) view.findViewById(R.id.task_down_priority);
+				holder.scheduleButton = (ImageButton) view.findViewById(R.id.task_schedule);
+				view.setTag(holder);
+			} else {
+				view = convertView;
+				holder = (ViewHolder) view.getTag();
+			}
 
 			final Task task = (Task) getItem(position);
 
-			titleView.setText(task.getTitle());
-			titleView.setOnClickListener(new OnClickListener() {
+			holder.titleView.setText(task.getTitle());
+			holder.titleView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
-					titleView.setVisibility(View.GONE);
-					titleViewEdit.setVisibility(View.VISIBLE);
-					titleViewEdit.requestFocus();
+					holder.titleView.setVisibility(View.GONE);
+					holder.titleViewEdit.setVisibility(View.VISIBLE);
+					holder.titleViewEdit.requestFocus();
 				}
 			});
 
-			titleViewEdit.setText(task.getTitle());
-			titleViewEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
+			holder.titleViewEdit.setText(task.getTitle());
+			holder.titleViewEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
 				@Override
 				public void onFocusChange(View v, boolean hasFocus) {
 					if (!hasFocus) {
-						titleViewEdit.setVisibility(View.GONE);
-						titleView.setVisibility(View.VISIBLE);
-						if (!titleViewEdit.getText().toString().equals(task.getTitle())) {
-							getTaskList().updateTitle(task.getId(), titleViewEdit.getText().toString());
+						holder.titleViewEdit.setVisibility(View.GONE);
+						holder.titleView.setVisibility(View.VISIBLE);
+						if (!holder.titleViewEdit.getText().toString().equals(task.getTitle())) {
+							getTaskList().updateTitle(task.getId(), holder.titleViewEdit.getText().toString());
 						}
 					}
 				}
 			});
 
 			if (task.getPlanned() > 0) {
-				dateView.setText(formatDate(task.getPlanned()));
-				dateView.setVisibility(View.VISIBLE);
+				holder.dateView.setText(formatDate(task.getPlanned()));
+				holder.dateView.setVisibility(View.VISIBLE);
 			} else {
-				dateView.setVisibility(View.GONE);
+				holder.dateView.setVisibility(View.GONE);
 			}
 
-			checkoutButton.setOnClickListener(new View.OnClickListener() {
+			holder.checkoutButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					getTaskList().checkoutTask(task.getId());
 				}
 			});
 
-			downButton.setOnClickListener(new View.OnClickListener() {
+			holder.downButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					getTaskList().downPriority(task.getId());
 				}
 			});
 
-			scheduleButton.setOnClickListener(new View.OnClickListener() {
+			holder.scheduleButton.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					DatePickerFragment datePicker = DatePickerFragment.newInstance(task.getId(), task.getPlanned());

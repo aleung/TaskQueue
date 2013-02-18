@@ -3,14 +3,15 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:paddingLeft="8dip"
+    android:paddingRight="8dip" >
 
     <ImageButton
         android:id="@+id/task_checkout"
         style="@style/imageButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="4dip"
         android:src="@drawable/br_prev_icon" />
 
     <LinearLayout
@@ -19,21 +20,14 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:paddingLeft="4dip" >
 
         <TextView
             android:id="@+id/task_title"
             style="@style/listTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/task_title_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/task_title_edit_hint"
-            android:inputType="textCapSentences"
-            android:visibility="gone" />
 
         <TextView
             android:id="@+id/task_date"

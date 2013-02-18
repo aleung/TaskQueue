@@ -13,10 +13,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import de.greenrobot.event.EventBus;
@@ -70,7 +67,6 @@ public class BacklogTasksFragment extends TaskListFragment {
 
 		private class ViewHolder {
 			TextView titleView;
-			EditText titleViewEdit;
 			TextView dateView;
 			ImageButton checkoutButton;
 			ImageButton downButton;
@@ -85,7 +81,6 @@ public class BacklogTasksFragment extends TaskListFragment {
 				view = LayoutInflater.from(getActivity()).inflate(R.layout.backlog_item, null);
 				holder = new ViewHolder();
 				holder.titleView = (TextView) view.findViewById(R.id.task_title);
-				holder.titleViewEdit = (EditText) view.findViewById(R.id.task_title_edit);
 				holder.dateView = (TextView) view.findViewById(R.id.task_date);
 				holder.checkoutButton = (ImageButton) view.findViewById(R.id.task_checkout);
 				holder.downButton = (ImageButton) view.findViewById(R.id.task_down_priority);
@@ -99,28 +94,6 @@ public class BacklogTasksFragment extends TaskListFragment {
 			final Task task = (Task) getItem(position);
 
 			holder.titleView.setText(task.getTitle());
-			holder.titleView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View arg0) {
-					holder.titleView.setVisibility(View.GONE);
-					holder.titleViewEdit.setVisibility(View.VISIBLE);
-					holder.titleViewEdit.requestFocus();
-				}
-			});
-
-			holder.titleViewEdit.setText(task.getTitle());
-			holder.titleViewEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
-				@Override
-				public void onFocusChange(View v, boolean hasFocus) {
-					if (!hasFocus) {
-						holder.titleViewEdit.setVisibility(View.GONE);
-						holder.titleView.setVisibility(View.VISIBLE);
-						if (!holder.titleViewEdit.getText().toString().equals(task.getTitle())) {
-							getTaskList().updateTitle(task.getId(), holder.titleViewEdit.getText().toString());
-						}
-					}
-				}
-			});
 
 			if (task.getPlanned() > 0) {
 				holder.dateView.setText(formatDate(task.getPlanned()));

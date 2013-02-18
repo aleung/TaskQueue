@@ -11,13 +11,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import de.greenrobot.event.EventBus;
@@ -72,7 +69,6 @@ public class CheckoutTasksFragment extends TaskListFragment {
 
 		private class ViewHolder {
 			TextView titleView;
-			EditText titleViewEdit;
 			CheckBox doneBox;
 			ImageButton uncheckoutButton;
 			ImageButton scheduleButton;
@@ -86,7 +82,6 @@ public class CheckoutTasksFragment extends TaskListFragment {
 				view = LayoutInflater.from(getActivity()).inflate(R.layout.checkout_item, null);
 				holder = new ViewHolder();
 				holder.titleView = (TextView) view.findViewById(R.id.task_title);
-				holder.titleViewEdit = (EditText) view.findViewById(R.id.task_title_edit);
 				holder.doneBox = (CheckBox) view.findViewById(R.id.task_is_done);
 				holder.uncheckoutButton = (ImageButton) view.findViewById(R.id.task_uncheckout);
 				holder.scheduleButton = (ImageButton) view.findViewById(R.id.task_schedule);
@@ -99,36 +94,6 @@ public class CheckoutTasksFragment extends TaskListFragment {
 			final Task task = (Task) getItem(position);
 
 			holder.titleView.setText(task.getTitle());
-			holder.titleView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View arg0) {
-					holder.titleView.setVisibility(View.GONE);
-					holder.doneBox.setVisibility(View.GONE);
-					holder.uncheckoutButton.setVisibility(View.GONE);
-					holder.scheduleButton.setVisibility(View.GONE);
-					holder.titleViewEdit.setText(task.getTitle());
-					holder.titleViewEdit.setVisibility(View.VISIBLE);
-					holder.titleViewEdit.requestFocus();
-				}
-			});
-
-			holder.titleViewEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
-				@Override
-				public void onFocusChange(View v, boolean hasFocus) {
-					if (!hasFocus) {
-						String newTitle = holder.titleViewEdit.getText().toString();
-						holder.titleView.setText(newTitle);
-						holder.titleViewEdit.setVisibility(View.GONE);
-						holder.titleView.setVisibility(View.VISIBLE);
-						holder.doneBox.setVisibility(View.VISIBLE);
-						holder.uncheckoutButton.setVisibility(View.VISIBLE);
-						holder.scheduleButton.setVisibility(View.VISIBLE);
-						if (!newTitle.equals(task.getTitle())) {
-							getTaskList().updateTitle(task.getId(), newTitle);
-						}
-					}
-				}
-			});
 
 			holder.doneBox.setChecked(false);
 			holder.doneBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {

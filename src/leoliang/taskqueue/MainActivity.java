@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.view.Menu;
 import android.widget.ArrayAdapter;
 
 public class MainActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
@@ -52,20 +51,20 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        
+
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
-			
+
 			@Override
 			public void onPageSelected(int position) {
 				Log.d("Main", "onPageSelected " + position);
 				actionBar.setSelectedNavigationItem(position);
 			}
-			
+
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 				// ignore
 			}
-			
+
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
 				// ignore
@@ -74,12 +73,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
 		// Show Checkout page
 		actionBar.setSelectedNavigationItem(1);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
     }
 
 

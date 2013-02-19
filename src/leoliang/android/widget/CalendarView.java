@@ -2,6 +2,7 @@ package leoliang.android.widget;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -81,6 +82,17 @@ public class CalendarView extends TableLayout {
 		rowParams.gravity = Gravity.CENTER_VERTICAL;
 		rowParams.setMargins(0, 0, 0, 0);
 
+		// calendar header
+
+		TableRow headerRow = new TableRow(context);
+		for (int j = 0; j < NUM_COLUMNS; j++) {
+			View cell = createAndRenderCalendarHeaderCell(j);
+			headerRow.addView(cell);
+		}
+		addView(headerRow, rowParams);
+
+		// calendar cells
+
 		cells = new ArrayList<View>();
 
 		for (int i = 0; i < NUM_ROWS; i++) {
@@ -132,7 +144,7 @@ public class CalendarView extends TableLayout {
 		int otherMonthColor             = 0xFFB1B1B1;
 		int otherMonthBackgroundColor   = 0xFFEBEBEB;
 		int passedDateColor             = 0xFFB1B1B1;
-		int passedDateBackgroundColor = 0xFFFFFFFF;
+		int passedDateBackgroundColor   = 0xFFFFFFFF;
 		int showingMonthColor           = 0xFF404040;
 		int showingMonthBackgroundColor = 0xFFFFFFFF;
 
@@ -158,8 +170,6 @@ public class CalendarView extends TableLayout {
 
 	/**
 	 * override this function to change design of view
-	 *
-	 * @return
 	 */
 	protected View createCalendarCell() {
 		TextView view = new TextView(context);
@@ -171,6 +181,36 @@ public class CalendarView extends TableLayout {
 		cellParams.weight = 1f;
 		cellParams.gravity = Gravity.CENTER;
 		cellParams.setMargins(1, 0, 0, 1);
+		view.setLayoutParams(cellParams);
+
+		return view;
+	}
+
+	/**
+	 * override this function to change design of view
+	 */
+	protected View createAndRenderCalendarHeaderCell(int weekDay) {
+		TextView view = new TextView(context);
+		view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+		view.setGravity(Gravity.CENTER);
+		view.setPadding(0, 4, 0, 4);
+
+		Calendar date = Calendar.getInstance();
+		date.set(helper.getYear(), helper.getMonth(), helper.getDayAt(1, weekDay));
+		view.setText(date.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault()));
+
+		int dayOfWeek = date.get(Calendar.DAY_OF_WEEK);
+		if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+			view.setTextColor(0xFFB1B1B1);
+		} else {
+			view.setTextColor(0xFF404040);
+		}
+		view.setBackgroundColor(0xFFFFFFFF);
+
+		TableRow.LayoutParams cellParams = new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT);
+		cellParams.weight = 1f;
+		cellParams.gravity = Gravity.CENTER;
+		cellParams.setMargins(1, 0, 0, 3);
 		view.setLayoutParams(cellParams);
 
 		return view;

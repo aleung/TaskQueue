@@ -1,7 +1,8 @@
 package leoliang.taskqueue;
 
-import java.util.TimeZone;
+import java.util.Calendar;
 
+import leoliang.android.widget.CalendarView;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -10,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CalendarView;
 import de.greenrobot.event.EventBus;
 
 public class DatePickerFragment extends DialogFragment {
@@ -57,22 +57,20 @@ public class DatePickerFragment extends DialogFragment {
 		View pickerView = inflater.inflate(R.layout.dialog_datepicker, null);
 		final CalendarView calendarView = (CalendarView) pickerView.findViewById(R.id.calendarView);
 
-		long currentTimeUtc = System.currentTimeMillis();
-		long currentTimeLocal = currentTimeUtc - TimeZone.getDefault().getOffset(currentTimeUtc);
-		calendarView.setMinDate(currentTimeLocal);
-		// FIXME: limit to 40 days because CalendarView scrolling to last bug
-		calendarView.setMaxDate(currentTimeLocal + 3600000L * 24 * 40);
-
-		long timeLocal = getArguments().getLong(ARGUMENT_DATE);
-		if (timeLocal == 0) {
+		Calendar date = Calendar.getInstance(); // now
+		long millis = getArguments().getLong(ARGUMENT_DATE);
+		if (millis == 0) {
 			// by default set to tomorrow
-			timeLocal = currentTimeLocal + 3600000L * 24;
-		} else if (timeLocal < currentTimeLocal) {
-			// not allow to set to past
-			timeLocal = currentTimeLocal;
+			date.add(Calendar.DAY_OF_YEAR, 1);
+		} else {
+			long currentTimeUtc = System.currentTimeMillis();
+			if (millis < currentTimeUtc) {
+				// not allow to set to past
+				millis = currentTimeUtc;
+			}
+			date.setTimeInMillis(millis);
 		}
-		// TODO: after max date?
-		calendarView.setDate(timeLocal);
+		calendarView.selectDate(date);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.title_schedule);
@@ -80,8 +78,9 @@ public class DatePickerFragment extends DialogFragment {
 		builder.setPositiveButton(R.string.button_set, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				Calendar date = calendarView.getSelectedDate();
 				EventBus.getDefault().post(
-						new DatePickedEvent(getArguments().getLong(ARGUMENT_CONTEXT_ID), calendarView.getDate()));
+						new DatePickedEvent(getArguments().getLong(ARGUMENT_CONTEXT_ID), date.getTimeInMillis()));
 			}
 		});
 		builder.setNeutralButton(R.string.button_remove, new OnClickListener() {

@@ -9,8 +9,8 @@ public class Task {
 	private long id;
 	private String title;
 	private Status status;
-	private long planned;
-	private long modified;
+	private long planned; // UTC milliseconds from the epoch
+	private long modified;// UTC milliseconds from the epoch
 	private int order;
 
 	void setId(long id) {

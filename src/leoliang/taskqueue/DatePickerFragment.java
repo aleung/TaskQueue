@@ -2,7 +2,7 @@ package leoliang.taskqueue;
 
 import java.util.Calendar;
 
-import leoliang.android.widget.CalendarView;
+import leoliang.android.widget.DatePicker;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -55,7 +55,7 @@ public class DatePickerFragment extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View pickerView = inflater.inflate(R.layout.dialog_datepicker, null);
-		final CalendarView calendarView = (CalendarView) pickerView.findViewById(R.id.calendarView);
+		final DatePicker picker = (DatePicker) pickerView.findViewById(R.id.datePicker);
 
 		Calendar date = Calendar.getInstance(); // now
 		long millis = getArguments().getLong(ARGUMENT_DATE);
@@ -70,7 +70,7 @@ public class DatePickerFragment extends DialogFragment {
 			}
 			date.setTimeInMillis(millis);
 		}
-		calendarView.selectDate(date);
+		picker.updateDate(date);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.title_schedule);
@@ -78,7 +78,7 @@ public class DatePickerFragment extends DialogFragment {
 		builder.setPositiveButton(R.string.button_set, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Calendar date = calendarView.getSelectedDate();
+				Calendar date = picker.getSelectedDate();
 				EventBus.getDefault().post(
 						new DatePickedEvent(getArguments().getLong(ARGUMENT_CONTEXT_ID), date.getTimeInMillis()));
 			}

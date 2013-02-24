@@ -2,8 +2,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
-    <leoliang.android.widget.CalendarView
-        android:id="@+id/calendarView"
+    <leoliang.android.widget.DatePicker
+        android:id="@+id/datePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

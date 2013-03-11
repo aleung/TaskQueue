@@ -51,6 +51,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+		mViewPager.setPageMargin(16);
+		mViewPager.setPageMarginDrawable(android.R.drawable.screen_background_dark);
 
         mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 

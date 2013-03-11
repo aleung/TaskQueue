@@ -37,12 +37,12 @@ public class CalendarView extends TableLayout {
 		 * @param dayOfMonth The day of the month that was set.
 		 */
 		public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth);
-
-		public void onShowingMonthChange(CalendarView view, int year, int month);
 	}
 
 	public static final int NUM_ROWS = 6;
 	public static final int NUM_COLUMNS = 7;
+
+	private static final int WEEK_START_DAY = Calendar.SUNDAY;
 
 	protected Context context;
 
@@ -70,8 +70,7 @@ public class CalendarView extends TableLayout {
 		this.context = context;
 		showingDate = Calendar.getInstance();
 
-		helper = new MonthDisplayHelper(showingDate.get(Calendar.YEAR), showingDate.get(Calendar.MONTH),
-				Calendar.SUNDAY);
+		helper = new MonthDisplayHelper(showingDate.get(Calendar.YEAR), showingDate.get(Calendar.MONTH), WEEK_START_DAY);
 
 		setBackgroundColor(0xFFDFDFDF);
 		setPadding(0, 1, 1, 0);
@@ -235,8 +234,7 @@ public class CalendarView extends TableLayout {
 	 */
 	public void refresh() {
 		// showingDate might has been changed, create new helper
-		helper = new MonthDisplayHelper(showingDate.get(Calendar.YEAR), showingDate.get(Calendar.MONTH),
-				Calendar.SUNDAY);
+		helper = new MonthDisplayHelper(showingDate.get(Calendar.YEAR), showingDate.get(Calendar.MONTH), WEEK_START_DAY);
 
 		Calendar today = Calendar.getInstance();
 		for (View cell : cells) {

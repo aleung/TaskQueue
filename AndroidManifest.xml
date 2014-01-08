@@ -1,11 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="leoliang.taskqueue"
     android:versionCode="1"
-    android:versionName="13Q1.1-dev" >
+    android:versionName="14Q1.1-dev" >
 
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="17" />
+    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -21,6 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name=".SettingsActivity" />
         
     </application>
 

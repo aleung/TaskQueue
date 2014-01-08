@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
 	public static final String TABLE_NAME = "task";
-	private static final int DATABASE_VERSION = 1;
-	private static final String DATABASE_NAME = "taskqueue";
+	public static final String DATABASE_NAME = "taskqueue";
+	public static final int DATABASE_VERSION = 1;
 
 	DatabaseOpenHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

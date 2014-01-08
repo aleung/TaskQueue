@@ -5,6 +5,7 @@ import java.util.List;
 import leoliang.taskqueue.DatePickerFragment.DatePickedEvent;
 import leoliang.taskqueue.repository.Task;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -40,6 +41,17 @@ public abstract class TaskListFragment extends ListFragment implements LoaderCal
 	@Override
 	public void onLoaderReset(Loader<List<Task>> loader) {
 		mAdapter.changeList(null);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_settings:
+			startActivity(new Intent(getActivity(), SettingsActivity.class));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	protected void createOptionsMenu(Menu menu, MenuInflater inflater) {
